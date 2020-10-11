@@ -1,9 +1,11 @@
-package ru.ifmo.se.s285596;
+package ru.ifmo.se.s285596.models;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.ifmo.se.s285596.models.Points;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,8 +21,14 @@ public class User implements UserDetails {
     private String username;
     private String password;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Points> pointsList;
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.pointsList = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;

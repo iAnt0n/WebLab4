@@ -1,4 +1,4 @@
-package ru.ifmo.se.s285596;
+package ru.ifmo.se.s285596.models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,9 +14,6 @@ public class Points {
     private double r;
     private boolean result;
     private LocalDateTime reqTime;
-
-    @ManyToOne
-    private User user;
 
     public Points(){}
 
@@ -74,12 +71,5 @@ public class Points {
         this.reqTime = reqTime;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
 

@@ -7,9 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import ru.ifmo.se.s285596.UserService;
-
-import javax.sql.DataSource;
+import ru.ifmo.se.s285596.services.UserService;
 
 @Configuration
 @EnableWebSecurity
