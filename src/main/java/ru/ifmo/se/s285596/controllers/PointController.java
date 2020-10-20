@@ -1,6 +1,7 @@
 package ru.ifmo.se.s285596.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import ru.ifmo.se.s285596.models.Points;
 import ru.ifmo.se.s285596.services.UserService;
@@ -9,6 +10,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class PointController {
     private final UserService userService;

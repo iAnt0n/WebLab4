@@ -7,26 +7,32 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import ru.ifmo.se.s285596.services.UserDetailsImpl;
+import ru.ifmo.se.s285596.services.UserDetailsServiceImpl;
 import ru.ifmo.se.s285596.services.UserService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    UserService userService;
+    UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(NoOpPasswordEncoder.getInstance());
+        auth.userDetailsService(userDetailsService).passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .csrf().disable()
+                .httpBasic()
+                .and()
                 .authorizeRequests()
-                .anyRequest().authenticated()
-                .and().httpBasic();
+                .antMatchers("/auth/login", "/auth/register", "/logout").permitAll()
+                .anyRequest().authenticated();
     }
 
 //    @Bean

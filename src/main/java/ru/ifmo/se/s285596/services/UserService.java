@@ -12,21 +12,12 @@ import ru.ifmo.se.s285596.repositories.UserRepository;
 import java.util.List;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(s);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return user;
     }
 
     public User findByUsername(String name) {

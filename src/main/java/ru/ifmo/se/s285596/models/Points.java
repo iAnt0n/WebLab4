@@ -70,6 +70,5 @@ public class Points {
     public void setReqTime(LocalDateTime reqTime) {
         this.reqTime = reqTime;
     }
-
 }
 
