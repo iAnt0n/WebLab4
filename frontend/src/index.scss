@@ -1,0 +1,131 @@
+html {
+  height: 100%;
+  font-size: 18px;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  background: #6ABF0B;
+  color: white;
+}
+
+.text-box-right {
+  text-align: right;
+}
+
+.main {
+  flex: 1 0 auto;
+}
+
+.footer {
+  flex: 0 0 auto;
+  text-align: center;
+  background-color: #6ABF0B;
+  vertical-align: center;
+}
+
+.flex-evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.flex-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.graph:hover {
+  box-shadow: 0 0 10px #6ABF0B;
+}
+
+.input-text {
+  border: 2px solid #6ABF0B;
+  border-radius: 10%;
+}
+
+.input-text:focus {
+  outline: none;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-header {
+  text-align: center;
+  font-weight: bold;
+  color: #8C0C7F;
+}
+
+.submit-button {
+  background-color: #6ABF0B;
+  color: #8C0C7F;
+  border-radius: 10%;
+  font-size: 1em;
+}
+
+.content {
+  margin: 0.5rem;
+}
+
+.main-form {
+  width: 30%
+}
+
+.x-button {
+  flex: 1 1 0;
+  text-align: center;
+  margin:1%;
+  text-decoration: none;
+  color: white;
+  background-color: #6ABF0B;
+}
+
+.x-button:hover {
+  box-shadow: 0 0 0 2px #cbd6ee;
+}
+
+.error-text {
+  text-align: center;
+  color: red;
+}
+
+#time {
+  font-size: 3rem;
+  background-color: #8C0C7F;
+  border: 1px solid #8C0C7F;
+  border-radius: 10%;
+  font-family: monospace;
+  padding: 0 1%;
+}
+
+#date {
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #8C0C7F;
+  border: 1px solid #8C0C7F;
+  border-radius: 0 0 10% 10%;
+  font-family: monospace;
+  padding: 0 1%;
+}

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import './index.css';
+import './index.scss';
 import Logout from "./Logout";
 import {Button} from "primereact/button";
 

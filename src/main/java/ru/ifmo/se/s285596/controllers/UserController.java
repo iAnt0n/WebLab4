@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<String> register(@RequestBody User user) {
-        if (userService.findByUsername(user.getUsername()) != null) {
+        if (userService.findByUsername(user.getUsername()) == null) {
             userService.save(user);
             return new ResponseEntity<>("Registration successful", HttpStatus.CREATED);
         }
