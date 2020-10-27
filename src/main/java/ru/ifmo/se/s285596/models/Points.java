@@ -17,10 +17,16 @@ public class Points {
 
     public Points(){}
 
+    public Points(PointDTO pointDTO){
+        this.x=pointDTO.getX();
+        this.y=pointDTO.getY();
+        this.r=pointDTO.getR();
+    }
+
     public void calculate() {
         result = ((x<=0 && y>=0) && y<=x+r)
                 || ((x>=0 && y>=0) && x*x+y*y<=r*r)
-                || ((x>=0 && y<=0) && x<=r/2 && y<=-r);
+                || ((x>=0 && y<=0) && x<=r/2 && y>=-r);
     }
 
     public int getId() {

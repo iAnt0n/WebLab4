@@ -13,7 +13,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>WebLab4</name>
-    <description>Demo project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -46,49 +45,28 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.6</version>
-                <configuration>
-                    <nodeVersion>v8.11.3</nodeVersion>
-                    <npmVersion>6.1.0</npmVersion>
-                    <workingDirectory>src/main/resources/static</workingDirectory>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
-                        <id>install node and npm</id>
+                        <id>package to war</id>
                         <goals>
-                            <goal>install-node-and-npm</goal>
+                            <goal>exploded</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>npm run build</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>run build</arguments>
-                        </configuration>
+                        <phase>package</phase>
                     </execution>
                 </executions>
-            </plugin>
-
-
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.ifmo.se.s285596.models.User;
+import ru.ifmo.se.s285596.models.UserDTO;
 import ru.ifmo.se.s285596.services.UserService;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @CrossOrigin
@@ -29,7 +31,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<String> register(@RequestBody User user) {
+    public ResponseEntity<String> register(@RequestBody @Valid UserDTO userDTO) {
+        User user = new User(userDTO.getUsername(), userDTO.getPassword());
         if (userService.findByUsername(user.getUsername()) == null) {
             userService.save(user);
             return new ResponseEntity<>("Registration successful", HttpStatus.CREATED);

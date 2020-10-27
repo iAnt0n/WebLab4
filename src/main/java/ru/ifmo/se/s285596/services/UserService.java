@@ -39,4 +39,10 @@ public class UserService {
         user.getPointsList().add(points);
         userRepository.save(user);
     }
+
+    public void deleteAll(String name) {
+        User user = userRepository.findByUsername(name);
+        user.getPointsList().clear();
+        userRepository.save(user);
+    }
 }

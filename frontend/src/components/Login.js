@@ -1,96 +1,112 @@
-import React, {Component} from "react";
+import React, {useRef, useState} from "react";
 import {InputText} from "primereact/inputtext";
 import {Password} from "primereact/password";
-import './index.scss';
-import login from '../service/requests'
-import register from '../service/requests'
+import {login} from "../service/requests";
+import {register} from "../service/requests";
+import {Messages} from 'primereact/messages';
+import LoginHeader from "./LoginHeader";
 
-class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: '',
-            password: '',
-            errorMessage: '',
-            successMessage: ''
-        };
+export function Login(props) {
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const [loginValid, setLoginValid] = useState(null);
+    const [passwordValid, setPasswordValid] = useState(null);
+    const messages = useRef();
 
-        this.login = login.bind(this);
-        this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
-        this.register = register.bind(this);
-        this.handleRegSubmit = this.handleRegSubmit.bind(this)
-    }
-
-    handleLoginSubmit(e) {
+    const handleLoginSubmit = (e) => {
         e.preventDefault();
-        this.setState({errorMessage: ''});
-        this.setState({successMessage: ''});
-        this.login(this.state.name, this.state.password).then(response => {
+        messages.current.clear();
+        login(name, password).then(response => {
             if (response.ok) {
-                localStorage.setItem("auth", btoa(this.state.name + ":" + this.state.password));
-                this.props.history.push('/');
+                localStorage.setItem("auth", btoa(unescape(encodeURIComponent(name + ':' + password))));
+                props.history.push('/');
             } else {
-                if (response.status===401){
-                    this.setState({errorMessage: 'Wrong login or password'})
-                }
-                else this.setState({errorMessage: 'Something went wrong, try again'})
+                if (response.status === 401) {
+                    messages.current.show({sticky: true, severity: 'error', detail: 'Wrong login or password'});
+                } else messages.current.show({
+                    sticky: true,
+                    severity: 'error',
+                    detail: 'Something went wrong. Try again'
+                });
             }
         });
-    }
+    };
 
-    handleRegSubmit(e) {
+    const handleRegSubmit = (e) => {
         e.preventDefault();
-        this.setState({errorMessage: ''});
-        this.setState({successMessage: ''});
-        this.register(this.state.name, this.state.password).then(response => {
-            if (response.ok) {
-                response.text().then(text =>
-                    this.setState({successMessage: text})
-                );
-            }
-            else response.text().then(text =>
-                this.setState({errorMessage: text})
-            );
-        });
-    }
+        messages.current.clear();
+        if (name !== '' && name.match("^[A-Za-z0-9_-]{1,14}$")) {
+            setLoginValid(true);
+        } else {
+            setLoginValid(false);
+        }
 
-    render() {
-        return (
+        if (password.length >= 4) {
+            setPasswordValid(true);
+        } else {
+            setPasswordValid(false);
+        }
+
+        if (loginValid && passwordValid) {
+            register(name, password).then(response => {
+                if (response.ok) {
+                    response.text().then(text =>
+                        messages.current.show({sticky: true, severity: 'success', detail: text})
+                    );
+                } else response.text().then(text =>
+                    messages.current.show({sticky: true, severity: 'error', detail: text})
+                );
+            });
+        }
+    };
+
+    const handleLoginChange = (e) => {
+        const newLogin = e.target.value;
+        setName(newLogin);
+    };
+
+    const handlePasswordChange = (e) => {
+        const newPassword = e.target.value;
+        setPassword(newPassword);
+    };
+
+    return (
+        <div className="w-100">
+            <LoginHeader/>
             <div className="container mt-3">
                 <div className="row">
-                    <div className="col-md-4 offset-md-4">
-                        { this.state.errorMessage &&
-                        <div className="alert alert-danger"> { this.state.errorMessage } </div> }
-                        { this.state.successMessage &&
-                        <div className="alert alert-success"> { this.state.successMessage } </div> }
+                    <div className="col-md-4 offset-md-4 col-lg-4 offset-lg-4 col-sm">
+                        <Messages ref={messages}/>
                         <div className="form-group">
                             <label htmlFor="username">Username</label>
-                            <InputText id="username" className="form-control" name="username" value={this.state.name}
+                            <InputText id="username" className="form-control" name="username"
+                                       value={name}
                                        autoComplete="off"
-                                       onChange={(e) => this.setState({name: e.target.value})}/>
+                                       onChange={handleLoginChange}/>
+                            {!loginValid && loginValid !== null &&
+                            <small style={{color: "#BF0B10"}}>Login can't be empty and can contain only latin letters,
+                                numbers, dashes and underscores</small>}
                         </div>
                         <div className="form-group">
                             <label htmlFor="username">Password</label>
-                            <Password id="password" className="form-control" name="password" weakLabel={null}
-                                      mediumLabel={null}
-                                      strongLabel={null}
-                                      promptLabel={null}
-                                      value={this.state.password}
-                                      onChange={(e) => this.setState({password: e.target.value})}/>
+                            <Password id="password" className="form-control" name="password"
+                                      feedback={false}
+                                      value={password}
+                                      onChange={handlePasswordChange}/>
+                            {!passwordValid && passwordValid !== null &&
+                            <small style={{color: "#BF0B10"}}>Password must be at least 4 characters long</small>}
                         </div>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-4 offset-md-4 d-flex justify-content-center">
+                    <div className="col-md-4 offset-md-4 col-lg-4 offset-lg-4 col-sm d-flex justify-content-center">
                         <input className="col btn btn-primary mr-3" type="button" value="Login"
-                               onClick={this.handleLoginSubmit}/>
+                               onClick={handleLoginSubmit}/>
                         <input className="col btn btn-secondary ml-3" type="button" value="Register"
-                               onClick={this.handleRegSubmit}/>
+                               onClick={handleRegSubmit}/>
                     </div>
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
-
-export default Login;

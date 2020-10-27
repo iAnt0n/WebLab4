@@ -20,7 +20,7 @@ public class User {
     private String username;
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Points> pointsList;
 
     public User(){}

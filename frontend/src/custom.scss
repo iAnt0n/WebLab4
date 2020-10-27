@@ -5,5 +5,10 @@ $grid-breakpoints: (
 );
 
 $primary: #6ABF0B;
-$secondary: #0B6ABF;
+$secondary: #0BBFBA;
+
+@import '~primereact/resources/themes/bootstrap4-light-blue/theme.css';
+@import '~primereact/resources/primereact.min.css';
+@import '~primeicons/primeicons.css';
 @import "../node_modules/bootstrap/scss/bootstrap";
+
