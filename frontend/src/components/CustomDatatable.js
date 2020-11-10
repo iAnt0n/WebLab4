@@ -3,7 +3,8 @@ import {DataTable} from "primereact/datatable";
 import React from "react";
 
 export function CustomDatatable(props) {
-    const adjustedHistory = props.pointHistory
+    const rawHistory = Array.isArray(props.pointHistory) ? props.pointHistory : [];
+    const adjustedHistory = rawHistory
         .map(point => ({ ...point, result: point.result ? 'Hit' : 'Miss' }))
         .reverse();
 

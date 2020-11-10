@@ -1,26 +1,17 @@
 import React, {useState} from 'react';
 import {Slider} from 'primereact/slider';
 import {InputText} from 'primereact/inputtext';
-import {Button} from "primereact/button";
 import {clearUserPoints, sendForm} from "../service/requests";
-import {useDispatch} from 'react-redux'
-import {changeR} from '../store/slices/inputValuesSlice';
+import {useDispatch, useSelector} from 'react-redux'
+import {changeR, selectR} from '../store/slices/inputValuesSlice';
 import {addPointToHistory, updateHistory} from "../store/slices/historySlice";
 import {addPoint} from "../store/slices/lastAddedPointSlice";
 
 export function PointForm() {
-    const getInitR = () => {
-        const storedR = localStorage.getItem("currentR");
-        if (isNaN(Number(storedR))||storedR==null){
-            localStorage.setItem("currentR", "1");
-            return 1;
-        }
-        return Number(storedR);
-    };
-
+    const globalR = useSelector(selectR);
     const [x, setX] = useState(0.0);
     const [y, setY] = useState(null);
-    const [r, setR] = useState(getInitR());
+    const [r, setR] = useState(globalR);
     const [xValid, setXValid] = useState(true);
     const [yValid, setYValid] = useState(false);
     const [rValid, setRValid] = useState(true);
@@ -43,13 +34,12 @@ export function PointForm() {
             dispatch(changeR(r));
             setRValid(true);
         }
-        localStorage.setItem("currentR", String(r));
         setR(r);
     };
 
     const handleChangeY = (e) => {
-        const y = Number(String(e.target.value).substring(0,14));
-        if (!(y > -3 && y < 3)) {
+        const y = e.target.value.substring(0,14);
+        if (y==='' || !(Number(y) > -3 && Number(y) < 3)) {
             setYValid(false);
         } else setYValid(true);
         setY(y);

@@ -5,7 +5,7 @@ export function getUserPoints() {
         {
             method: 'GET',
             headers: {
-                Authorization: "Basic " + localStorage.getItem("auth")
+                Authorization: "Bearer " + localStorage.getItem("auth")
             }
         }
     );
@@ -16,7 +16,7 @@ export function clearUserPoints() {
         {
             method: 'DELETE',
             headers: {
-                Authorization: "Basic " + localStorage.getItem("auth")
+                Authorization: "Bearer " + localStorage.getItem("auth")
             }
         }
     );
@@ -28,7 +28,7 @@ export function sendForm(x, y, r) {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Basic " + localStorage.getItem("auth")
+                Authorization: "Bearer " + localStorage.getItem("auth")
             },
             body: JSON.stringify({"x": x, "y": y, "r": r})
         }
@@ -36,12 +36,13 @@ export function sendForm(x, y, r) {
 }
 
 export function login(name, password) {
-    return fetch(`${backendHost}/web-lab-4-0.0.1-SNAPSHOT/auth/login`,
+    return fetch(`${backendHost}/web-lab-4-0.0.1-SNAPSHOT/authentication`,
         {
             method: 'POST',
             headers: {
-                Authorization: "Basic " + btoa(unescape(encodeURIComponent(name + ':' + password)))
-            }
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({"username": name, "password": password})
         }
     );
 }

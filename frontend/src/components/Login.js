@@ -13,16 +13,39 @@ export function Login(props) {
     const [passwordValid, setPasswordValid] = useState(null);
     const messages = useRef();
 
+    const validateValues = () => {
+        let loginIsValid = false;
+        let passIsValid = false;
+        if (name !== '' && name.match("^[A-Za-z0-9_-]{1,14}$")) {
+            loginIsValid = true;
+            setLoginValid(true);
+        } else setLoginValid(false);
+
+
+        if (password.length >= 4) {
+            passIsValid = true;
+            setPasswordValid(true);
+        } else setPasswordValid(false);
+
+        return loginIsValid && passIsValid;
+    };
+
     const handleLoginSubmit = (e) => {
         e.preventDefault();
         messages.current.clear();
         login(name, password).then(response => {
             if (response.ok) {
-                localStorage.setItem("auth", btoa(unescape(encodeURIComponent(name + ':' + password))));
-                props.history.push('/');
+                response.text().then(text => {
+                        localStorage.setItem("auth", text);
+                        props.history.push('/');
+                    }
+                );
             } else {
                 if (response.status === 401) {
-                    messages.current.show({sticky: true, severity: 'error', detail: 'Wrong login or password'});
+                    response.text().then(text => {
+                            messages.current.show({sticky: true, severity: 'error', detail: text});
+                        }
+                    );
                 } else messages.current.show({
                     sticky: true,
                     severity: 'error',
@@ -35,19 +58,7 @@ export function Login(props) {
     const handleRegSubmit = (e) => {
         e.preventDefault();
         messages.current.clear();
-        if (name !== '' && name.match("^[A-Za-z0-9_-]{1,14}$")) {
-            setLoginValid(true);
-        } else {
-            setLoginValid(false);
-        }
-
-        if (password.length >= 4) {
-            setPasswordValid(true);
-        } else {
-            setPasswordValid(false);
-        }
-
-        if (loginValid && passwordValid) {
+        if (validateValues()) {
             register(name, password).then(response => {
                 if (response.ok) {
                     response.text().then(text =>
@@ -59,6 +70,7 @@ export function Login(props) {
             });
         }
     };
+
 
     const handleLoginChange = (e) => {
         const newLogin = e.target.value;

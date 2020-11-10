@@ -17,7 +17,7 @@ export function Graph(props) {
 
     useEffect(
         () => {
-            drawPreviousPoints(props.pointHistory);
+            drawPreviousPoints(Array.isArray(props.pointHistory) ? props.pointHistory : []);
             return () => clearPoints()
         },
         [props.pointHistory]

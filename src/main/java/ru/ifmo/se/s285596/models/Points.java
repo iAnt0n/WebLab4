@@ -7,13 +7,15 @@ import java.time.LocalDateTime;
 public class Points {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     private double x;
     private double y;
     private double r;
     private boolean result;
     private LocalDateTime reqTime;
+    @ManyToOne
+    private User user;
 
     public Points(){}
 
@@ -23,17 +25,17 @@ public class Points {
         this.r=pointDTO.getR();
     }
 
-    public void calculate() {
-        result = ((x<=0 && y>=0) && y<=x+r)
+    public boolean calculate() {
+        return ((x<=0 && y>=0) && y<=x+r)
                 || ((x>=0 && y>=0) && x*x+y*y<=r*r)
                 || ((x>=0 && y<=0) && x<=r/2 && y>=-r);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -75,6 +77,14 @@ public class Points {
 
     public void setReqTime(LocalDateTime reqTime) {
         this.reqTime = reqTime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
 
